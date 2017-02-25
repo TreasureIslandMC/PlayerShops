@@ -1,0 +1,100 @@
+Prefix: '&8[&aPlayerShops&8]&7'
+
+PermissionDenied: '%prefix% You do not have permission to do that'
+BlockCreative: '%prefix% You cannot do that well in creative'
+
+NoInventorySpace: '%prefix% You do not have any space in your inventory'
+ToManyItemsInShop: '%prefix% Your shop can hold that many items: dropping them at your location'
+
+Commands:
+  HelpMenu:
+    Top:
+      - '&8- - - - - - - - - &7[ &aPlayer Shops &7]&8- - - - - - - - -'
+      - '&7Guide&8:&7 <required> &8|&7 (optional)'
+    Bottom:
+      - '&8- - - - - - - - - - - - - - - - - - - - - - - - - -'
+
+  Clean:
+    # Permission nobe: playershops.clean
+    # Default: Admin
+    Format: '&a/ps clean (age) &7- Remove accounts over the age of x days'
+    Started: '%prefix% Removing accounts over %days% day(s) old'
+    Finished: '%prefix% %amount% accounts have been removed (Took %time% ms)'
+
+  Convert:
+    # Permission nobe: playershops.convert
+    # Default: Admin
+    Format: '&a/ps convert <mysql/file> &7- Converts to a database type'
+    MySQLSelected: '%prefix% You must set your data type as MYSQL'
+    NoDataFolder: '%prefix% Could not find data folder... nothing to convert.'
+    SuccessToMySQL: '%prefix% Successfully convert %amount% files to your MySQL (Took %time% ms)'
+    SuccessToFile: '%prefix% Successfully convert %amount% columns to your MySQL (Took %time% ms)'
+
+  Delete:
+    # Permission nobe: playershops.delete
+    # Default: Admin
+    Format: '&a/ps delete <player> &7- Delete player from database'
+    Removed: '%prefix% &f%player%&7 has been deleted form the database'
+    NotFound: '%prefix% &f%player%&7 was not found in the database'
+
+  Edit:
+    # Permission nobe: playershops.edit
+    # Default: Admin
+    Format: '&a/ps edit <player> &7- Edit a players shop'
+
+  Reload:
+    # Permission nobe: playershops.reload
+    # Default: Admin
+    Format: '&a/ps reload &7- Reloads everything related to PlayerShops &8(&cNot recommened&8)'
+    Success: '%prefix% Successfully reload ...'
+
+  Search:
+    # Permission nobe: playershops.search
+    # Default: Everyone
+    Format: '&a/ps search (item) &7- Search by ID or name &8(&7default item in hand&8)'
+    InvalidMaterial: '%prefix% The material id/name you have entered is invalid'
+    NoItemInHand: '%prefix% You are not holding an item in your hand'
+    Searching: '&aSearching &7for &f%material%&7, this may take a few mins...'
+    Results: '&7%counter%&8. &f%player% &7is selling &7%material% &7for &e%price%'
+    Nothing: '&7None seems to be selling this item.. &f:( &8(&7Completed&8: &f%time%&7ms&8)'
+    Bottom: '&7Showing top %counter% cheapest options &8(&7Completed&8: &f%time%&7ms&8)'
+    Hover: "&7Click to open %player%'s shop"
+
+  Sell:
+    # Permission nobe: playershops.sell
+    # Default: Everyone
+    Format: '&a/ps sell <price> &7- Adds the current item in hand to your shop'
+    NoItemInHand: '%prefix% You are not holding an item in your hand'
+    InvalidNumber: '%prefix% You did not enter a valid number'
+    PriceToHigh: '%prefix% The price you have entered is to &chigh'
+    PriceToLow: '%prefix% The price you have entered is to &clow'
+    ShopFull: '%prefix% You do not have enough space in your shop to add that item'
+
+  SetConfig:
+    # Permission nobe: playershops.setconfig
+    # Default: Admin
+    Format: '&a/ps setconfig <location> <value> &7- Set a value in the config'
+    Success: '%prefix% Setting &a%location% &7to &a%value%&7.'
+    NotFound: '%prefix% Location &8(&7%location%&8)&7 not found in the config file.'
+
+  Shop:
+    # Permission nobe: playershops.shop
+    # Default: Everyone
+    Format: '&a/ps shop <name> &7- Open players shop'
+    NotSet: '%prefix% %player% has not created a shop'
+    NotFound: '%prefix% Could not find %player% in the database'
+
+Transaction:
+  CollectBills: '%prefix% You have &a%amount%&7 transaction bill(s) that needs to collected.'
+  Tax:
+    Applied: '%prefix% A &f%taxtype% &7transaction fee of &f$%amount% &7has been applied'
+    CantAfford: '%prefix% You cannot afford the transaction fee of &f$%amount%'
+  Message: '%prefix% You bought &d%item% &7from &a%player%&7 for &e$%price%&7'
+  Notify: '%prefix% %player% &7just bough &d%item%&7(x%amount%) from you, for &e$%price%&7'
+  NotEnoughMoney: '%prefix% You do not have enough money to buy that'
+  Bill: '%prefix% &f%money%&7 has been added to your account'
+
+Reload:
+  InventoryClose: '%prefix% A admin has reloaded the server; Closing shop inventory.'
+
+Update: '%prefix% An update is &aavailable&7!'

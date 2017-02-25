@@ -1,0 +1,47 @@
+ name: PlayerShops
+ version: 1.2.1
+ description: Virtual player shops
+ author: [InfoPaste]
+ website: https://www.spigotmc.org/resources/number/
+
+ main: me.infopaste.playershops.Main
+ database: false
+ softdepend: [Vault]
+
+
+ commands:
+   playershop:
+     description: Main Player Shop command line
+     aliases: [ps, pshop, pshops]
+
+
+ permissions:
+
+   playershops.admin:
+     description: Access to all PlayerShop permissions
+     children:
+       playershops.clean: true
+       playershops.remove: true
+       playershops.edit: true
+       playershops.size.6: true
+       playershops.reload: true
+       playershops.update: true
+       playershops.setconfig: true
+       playershops.setlang: true
+       playershops.convert: true
+
+   playershops.shop:
+     description: Use the /playershop shop command
+     default: true
+
+   playershops.search:
+     description: Player can search for items
+     default: true
+
+   playershops.sell:
+     description: Player can sell items in there shop
+     default: true
+
+   playershops.size.1:
+     description: Player has a inventory size of 1 row
+     default: true

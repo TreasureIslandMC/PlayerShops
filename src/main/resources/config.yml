@@ -1,0 +1,126 @@
+Database:
+  # Type Options:
+  # FILE - Saves to file
+  # MYSQL - Saves to MySQL
+  Type: MYSQL
+  Host: localhost
+  Username: 'root'
+  # Leave blank for no password
+  Password: ''
+  Database: 'playershops'
+  Port: 3306
+
+Settings:
+  BlockCreative: true
+
+  UpdateChecker: true
+
+  # Note the "00", meaning exactly two decimal places.
+  # If you use "#.##" (# means "optional" digit), it will drop trailing zeroes
+  DecimalFormat: '#,###,##0.00'
+
+  MaxPrice: 1000000.0
+  MinPrice: 0.0
+
+  ShopPrefix: 'Shop:'
+  PriceLore: '&ePrice&7:&e %price%'
+  PriceEachLore: '&ePrice Each&7:&e %price%'
+
+  SearchSize: 10
+
+  # Recommend maxSize = RAM * 0.1
+  MaxOfflineInventoriesSize: 200
+
+  Log:
+    Enabled: true
+
+    Transaction: true
+    AddItemToShop: true
+    BillCollection: true
+    Taxes: true
+
+  CleanDatabase:
+    OnEnable: true
+    OlderThan: 50
+
+Signs:
+  Tag: '[PS]'
+  ColorTag: '&8[&aPlayerShops&8]'
+  SearchKeyword: 'Search'
+  ShopKeyword: 'Shop'
+
+  Player: '&1%player%'
+  Material: '&1%material%'
+
+  InvalidTag: '&8[&4Error&8]'
+  InvalidKeyword: '&4Invalid Keyword'
+  InvalidMaterial: '&4Invalid Material'
+  InvalidPlayer: '&4Player Name'
+
+CustomCommands:
+  Shop: /shop
+  Search: /search
+  Sell: /sell
+
+Bill:
+  PlayerKeepsBill: false
+  JoinNotification: true
+  Title: '&eTransaction Bill'
+  Completed: '&8(&7Completed&8)'
+  Material: PAPER
+  DateFormat: "MMM dd, yyyy 'at' HH:mm z"
+  # !! The lore of the bill must contain a price variable !!
+  Lore:
+    - '&7Item&8: &7%item% &8(&7x%amount%&8)'
+    - '&7Date&8: &7%date%'
+    - '&7Customor&8: &7%player%'
+    - '&7Price&8: &7%price%'
+
+
+ItemPermissions:
+  Group1:
+    Permission: 'playershops.group1'
+    # They can only sell these items
+    SellItems: true
+    Items:
+    - DIAMOND
+  Group2:
+    Permission: 'playershops.group2'
+    #Can sell everything but this item
+    SellItems: false
+    Items:
+    - DIAMOND
+  Group3:
+    Permission: 'playershops.group3'
+    CanSell: true
+    Items:
+    - DIAMOND
+
+
+Transaction:
+  # Tax Types: PERCENT, FLAT, NONE
+  # When a player adds an item to his/her shop this tax is applied
+  Sell:
+    Tax: FLAT
+    DontApply: 2
+    Amount: 1.5
+
+    # Add custom tax values for certian items when selling
+    Items:
+    - 'DIAMOND|8'
+
+  # When the seller collects his/her bill this tax is applied
+  Buy:
+    DontApply: 2
+    Tax: PERCENT
+    Amount: 0.05
+
+    # Add custom tax values for certian items when buying
+    Items:
+    - 'DIAMOND|0.06'
+
+  TaxDiscounts:
+    5Percent:
+      Permission: 'playershops.tax.5%'
+      Tax: PERCENT
+      Amount: 0.05
