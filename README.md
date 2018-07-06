@@ -1,6 +1,8 @@
 # PlayerShops
 
-<img style="float: center;" src="media/Logo/Main.png">
+<p align="center">
+  <img src="media/Logo/Main.png" />
+</p>
 
 PlayerShops allows players to create their own virtual shops where they can sell or purchase items from any player, even if they are offline. Players can also search for items to get the best deals, with a simple and interactive search command. For admins, PlayerShops comes with support for both MySQL and File data storage, along with a transaction logging feature to track any information you need.
 
