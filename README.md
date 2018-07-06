@@ -4,6 +4,7 @@ PlayerShops allows players to create their own virtual shops where they can sell
 
 
 <img src="media/Text/Features.png" />
+
  - Requires Vault
  - Supports MySQL and File data storage (MySQL Recommend)
  - Effective and Efficient
