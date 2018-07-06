@@ -35,6 +35,8 @@ PlayerShops allows players to create their own virtual shops where they can sell
     - Open player shops or execute searches
    
 
+
+
 <img src="media/Text/Commands.png" />
 
 **Aliases: pshop, pshops, ps, playershops**
@@ -52,7 +54,10 @@ PlayerShops allows players to create their own virtual shops where they can sell
 * /ps setconfig - Set values in the config
 * /ps convert <mysql/file> - Converts to a database type
     
-<p align="center"><img src="media/Text/Permissions.png" /></p>
+    
+
+<img src="media/Text/Permissions.png" />
+
 * playershops.size.1 - Player with a 1-row inventory shop (default)
 * playershops.size.2 - Player with a 2-row inventory shop
 * playershops.size.3 - Player with a 3-row inventory shop
@@ -74,6 +79,8 @@ PlayerShops allows players to create their own virtual shops where they can sell
 * playershops.update - Sends a message when update is available
 * playershops.admin - Access to anything with a star
     
+
+
 <img src="media/Text/FQA.png" />
 
 **I don't want a message to show when a player ____ , how do I remove it?**
