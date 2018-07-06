@@ -3,6 +3,10 @@
 PlayerShops allows players to create their own virtual shops where they can sell or purchase items from any player, even if they are offline. Players can also search for items to get the best deals, with a simple and interactive search command. For admins, PlayerShops comes with support for both MySQL and File data storage, along with a transaction logging feature to track any information you need.
 
 
+A complied version can be founds [here](https://www.spigotmc.org/resources/58443/).
+
+
+
 <img src="media/Text/Features.png" />
 
  - Requires Vault
