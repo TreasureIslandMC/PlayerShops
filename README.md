@@ -2,8 +2,8 @@
 
 PlayerShops allows players to create their own virtual shops where they can sell or purchase items from any player, even if they are offline. Players can also search for items to get the best deals, with a simple and interactive search command. For admins, PlayerShops comes with support for both MySQL and File data storage, along with a transaction logging feature to track any information you need.
 
-<p align="center"><img src="media/Text/Features.png" /></p>
 
+<img src="media/Text/Features.png" />
  - Requires Vault
  - Supports MySQL and File data storage (MySQL Recommend)
  - Effective and Efficient
@@ -33,8 +33,8 @@ PlayerShops allows players to create their own virtual shops where they can sell
  - Signs
     - Open player shops or execute searches
    
-   
-<p align="center"><img src="media/Text/Commands.png" /></p>
+
+<img src="media/Text/Commands.png" />
 
 **Aliases: pshop, pshops, ps, playershops**
 
@@ -73,7 +73,7 @@ PlayerShops allows players to create their own virtual shops where they can sell
 * playershops.update - Sends a message when update is available
 * playershops.admin - Access to anything with a star
     
-<p align="center"><img src="media/Text/FQA.png" /></p>
+<img src="media/Text/FQA.png" />
 
 **I don't want a message to show when a player ____ , how do I remove it?**
 Set the string in lang.yml to ''.
