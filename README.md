@@ -36,9 +36,9 @@ PlayerShops allows players to create their own virtual shops where they can sell
    
 ## Commands
 
-Aliases: pshop, pshops, ps, playershops
+**Aliases: pshop, pshops, ps, playershops**
 
-<Required>     (Optional)
+\<Required>  (Optional)
 
 * /ps - Help menu
 * /ps clean (days) - Cleans the database of older accounts
@@ -52,12 +52,12 @@ Aliases: pshop, pshops, ps, playershops
 * /ps convert <mysql/file> - Converts to a database type
     
 ## Permissions
-* playershops.size.1 - Player with a 1 row inventory shop (default)
-* playershops.size.2 - Player with a 2 row inventory shop
-* playershops.size.3 - Player with a 3 row inventory shop
-* playershops.size.4 - Player with a 4 row inventory shop
-* playershops.size.5 - Player with a 5 row inventory shop
-* playershops.size.6 - Player with a 6 row inventory shop
+* playershops.size.1 - Player with a 1-row inventory shop (default)
+* playershops.size.2 - Player with a 2-row inventory shop
+* playershops.size.3 - Player with a 3-row inventory shop
+* playershops.size.4 - Player with a 4-row inventory shop
+* playershops.size.5 - Player with a 5-row inventory shop
+* playershops.size.6 - Player with a 6-row inventory shop
 * playershops.shop - Access to /ps shop
 * playershops.clean - Access to /ps clean
 * playershops.search - Access to /ps search

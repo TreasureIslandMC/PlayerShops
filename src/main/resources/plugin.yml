@@ -4,7 +4,7 @@
  author: [InfoPaste]
  website: https://www.spigotmc.org/resources/number/
 
- main: me.infopaste.playershops.Main
+ main: Main
  database: false
  softdepend: [Vault]
 
