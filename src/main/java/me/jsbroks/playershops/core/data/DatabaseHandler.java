@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import java.sql.ResultSet;
 import java.util.UUID;
 
-import static me.jsbroks.playershops.Main.*;
+import static me.jsbroks.playershops.PlayerShops.*;
 
 
 public enum DatabaseHandler {

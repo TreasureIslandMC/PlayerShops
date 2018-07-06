@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static me.jsbroks.playershops.Main.databaseHandler;
-import static me.jsbroks.playershops.Main.onlineInventories;
-import static me.jsbroks.playershops.Main.plugin;
+import static me.jsbroks.playershops.PlayerShops.databaseHandler;
+import static me.jsbroks.playershops.PlayerShops.onlineInventories;
+import static me.jsbroks.playershops.PlayerShops.plugin;
 
 public class PermissionUtil {
 

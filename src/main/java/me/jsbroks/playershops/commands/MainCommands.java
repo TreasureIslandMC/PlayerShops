@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-import static me.jsbroks.playershops.Main.*;
+import static me.jsbroks.playershops.PlayerShops.*;
 
 public class MainCommands implements CommandExecutor {
 
@@ -87,29 +87,32 @@ public class MainCommands implements CommandExecutor {
 
                     String configSection = "ItemPermissions";
 
-                    for (String section : Config.config.getConfigurationSection(configSection).getKeys(false)) {
-                        configSection = configSection + "." + section;
-                        if (Config.config.contains(configSection + ".Permission") && player.hasPermission(Config.config.getString(configSection + ".Permission"))) {
+                    if (!player.hasPermission("playershops.bypass.item.permissions")) {
+                        for (String section : Config.config.getConfigurationSection(configSection).getKeys(false)) {
+                            configSection = configSection + "." + section;
+                            if (Config.config.contains(configSection + ".Permission")
+                                    && player.hasPermission(Config.config.getString(configSection + ".Permission"))) {
 
-                            boolean sellItems = true;
-                            if (Config.config.contains(configSection + ".SellItems")) {
-                                sellItems = Config.config.getBoolean(configSection + ".SellItems");
-                            }
+                                boolean sellItems = true;
+                                if (Config.config.contains(configSection + ".SellItems")) {
+                                    sellItems = Config.config.getBoolean(configSection + ".SellItems");
+                                }
 
-                            if (Config.config.contains(configSection + ".Items")) {
-                                List<String> items = Config.config.getStringList(configSection + ".Items");
-                                if(items.contains(item.getType().name())) {
-                                    if(sellItems) {
-                                        break;
+                                if (Config.config.contains(configSection + ".Items")) {
+                                    List<String> items = Config.config.getStringList(configSection + ".Items");
+                                    if(items.contains(item.getType().name())) {
+                                        if(sellItems) {
+                                            break;
+                                        } else {
+                                            player.sendMessage("cant sell item");
+                                        }
                                     } else {
-                                        player.sendMessage("cant sell item");
-                                    }
-                                } else {
-                                    if (sellItems) {
-                                        player.sendMessage("Cant sell that item");
-                                        return true;
-                                    } else {
-                                        break;
+                                        if (sellItems) {
+                                            player.sendMessage("Cant sell that item");
+                                            return true;
+                                        } else {
+                                            break;
+                                        }
                                     }
                                 }
                             }

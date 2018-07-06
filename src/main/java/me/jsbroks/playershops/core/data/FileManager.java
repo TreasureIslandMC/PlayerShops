@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static me.jsbroks.playershops.Main.plugin;
+import static me.jsbroks.playershops.PlayerShops.plugin;
 
 class FileManager {
 

@@ -3,7 +3,7 @@ package me.jsbroks.playershops.core.data;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.huskehhh.mysql.mysql.MySQL;
-import me.jsbroks.playershops.Main;
+import me.jsbroks.playershops.PlayerShops;
 import me.jsbroks.playershops.core.Config;
 import me.jsbroks.playershops.util.InventoryUtil;
 import me.jsbroks.playershops.util.ItemUtil;
@@ -62,7 +62,7 @@ class MySQLManager {
             System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = =");
             System.out.println(this.prefix + "Have you entered in all the correct information?");
             System.out.println(this.prefix + "Reverting to FILE data storage");
-            Main.error = true;
+            PlayerShops.error = true;
             DatabaseHandler.FILE.setUp();
 
         }

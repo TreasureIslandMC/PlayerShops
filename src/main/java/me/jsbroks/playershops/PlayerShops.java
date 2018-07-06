@@ -4,7 +4,6 @@ import me.jsbroks.playershops.commands.MainCommands;
 import me.jsbroks.playershops.core.Config;
 import me.jsbroks.playershops.core.TransactionLogger;
 import me.jsbroks.playershops.core.data.DatabaseHandler;
-import me.infopaste.playershops.listener.*;
 import me.jsbroks.playershops.util.MapUtil;
 import me.jsbroks.playershops.util.TextUtil;
 import me.jsbroks.playershops.core.hooks.HookManager;
@@ -15,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 
-public class Main extends JavaPlugin {
+public class PlayerShops extends JavaPlugin {
 
     public static Plugin plugin;
 
@@ -41,30 +39,6 @@ public class Main extends JavaPlugin {
     public static Map<UUID, Inventory> offlineInventories;
 
     public static Set<Player> playersInEditMode;
-
-    @Override
-    public void onDisable() {
-        //Close MySQL database
-
-        getLogger().info("Saving all shops to database.");
-        for (Map.Entry<UUID, Inventory> entry : onlineInventories.entrySet()) {
-            databaseHandler.setInventory(entry.getKey(), entry.getValue());
-        }
-        for (Map.Entry<UUID, Inventory> entry : offlineInventories.entrySet()) {
-            databaseHandler.setInventory(entry.getKey(), entry.getValue());
-        }
-
-        getLogger().info("Closing all players inventories. (In case this is a reload)");
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getOpenInventory().getTitle().startsWith(Config.config.getString("Settings.ShopPrefix"))) {
-                player.closeInventory();
-                TextUtil.sendMessage(player, Config.lang.getString("Reload.InventoryClose"));
-            }
-        }
-
-        databaseHandler.close();
-        plugin = null;
-    }
 
     @Override
     public void onEnable() {
@@ -88,7 +62,30 @@ public class Main extends JavaPlugin {
         playersInEditMode = new HashSet<>();
 
         setUp();
+    }
 
+    @Override
+    public void onDisable() {
+        //Close MySQL database
+
+        getLogger().info("Saving all shops to database.");
+        for (Map.Entry<UUID, Inventory> entry : onlineInventories.entrySet()) {
+            databaseHandler.setInventory(entry.getKey(), entry.getValue());
+        }
+        for (Map.Entry<UUID, Inventory> entry : offlineInventories.entrySet()) {
+            databaseHandler.setInventory(entry.getKey(), entry.getValue());
+        }
+
+        getLogger().info("Closing all players inventories. (In case this is a reload)");
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getOpenInventory().getTitle().startsWith(Config.config.getString("Settings.ShopPrefix"))) {
+                player.closeInventory();
+                TextUtil.sendMessage(player, Config.lang.getString("Reload.InventoryClose"));
+            }
+        }
+
+        databaseHandler.close();
+        plugin = null;
     }
 
     /**
@@ -119,31 +116,31 @@ public class Main extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (Config.config.getBoolean("Settings.UpdateChecker")) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    plugin.getLogger().info("Checking for update...");
-
-                    String website = Main.checkWebsiteForString();
-
-                    if (website.equalsIgnoreCase(plugin.getDescription().getVersion())) {
-                        plugin.getLogger().info("You are using the most current version");
-                    } else if (website.equalsIgnoreCase("Error")) {
-                        plugin.getLogger().info("Error checking for update, couldn't connect to spigotmc.org");
-                    } else {
-                        plugin.getLogger().info("An new update is available! (" + website + ")");
-                        update = true;
-                    }
-                }
-            }.runTaskAsynchronously(plugin);
-        } else {
-            getLogger().info("Skipping checking for updates (disabled in config.yml)");
-        }
+        //TODO: Update update checker
+//        if (Config.config.getBoolean("Settings.UpdateChecker")) {
+//            new BukkitRunnable() {
+//                @Override
+//                public void run() {
+//                    plugin.getLogger().info("Checking for update...");
+//
+//                    String website = PlayerShops.checkWebsiteForString();
+//
+//                    if (website.equalsIgnoreCase(plugin.getDescription().getVersion())) {
+//                        plugin.getLogger().info("You are using the most current version");
+//                    } else if (website.equalsIgnoreCase("Error")) {
+//                        plugin.getLogger().info("Error checking for update, couldn't connect to spigotmc.org");
+//                    } else {
+//                        plugin.getLogger().info("An new update is available! (" + website + ")");
+//                        update = true;
+//                    }
+//                }
+//            }.runTaskAsynchronously(plugin);
+//        } else {
+//            getLogger().info("Skipping checking for updates (disabled in config.yml)");
+//        }
     }
 
     private void setUp() {
-
         try {
             Class.forName("org.spigotmc.SpigotConfig");
         } catch (ClassNotFoundException ignore) {
@@ -164,7 +161,6 @@ public class Main extends JavaPlugin {
      *
      * @param plugin  Instances of main plugin
      * @param listeners Name of classes that extend listeners
-     * @return void
      */
     private static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
         for (Listener listener : listeners) {
@@ -172,10 +168,11 @@ public class Main extends JavaPlugin {
         }
     }
 
+    @Deprecated
     private static String checkWebsiteForString() {
         try {
 
-            int resource = 26924;
+            int resource = 0;
             HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
             con.setDoOutput(true);
             con.setRequestMethod("POST");

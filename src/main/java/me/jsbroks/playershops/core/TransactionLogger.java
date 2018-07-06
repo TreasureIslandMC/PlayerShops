@@ -9,7 +9,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static me.jsbroks.playershops.Main.plugin;
+import static me.jsbroks.playershops.PlayerShops.plugin;
 
 public class TransactionLogger {
 

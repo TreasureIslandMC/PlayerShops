@@ -1,6 +1,6 @@
 package me.jsbroks.playershops.core.hooks;
 
-import me.jsbroks.playershops.Main;
+import me.jsbroks.playershops.PlayerShops;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -12,13 +12,13 @@ public class HookManager {
         if (doesPluginExist("Vault", "[PlayerShop] Hooked: Vault")) {
             vault = new VaultHook();
         } else {
-            Main.plugin.getLogger().info("Could not find Vault, disabling...");
-            Bukkit.getPluginManager().disablePlugin(Main.plugin);
+            PlayerShops.plugin.getLogger().info("Could not find Vault, disabling...");
+            Bukkit.getPluginManager().disablePlugin(PlayerShops.plugin);
         }
 
         if (doesPluginExist("ProtectionStones")) {
-            Main.plugin.getLogger().info("ProtectionStones is known you over ride playershops command '/ps'");
-            Main.plugin.getLogger().info("You can use other commands such as '/pshops', '/playershops' to access it");
+            PlayerShops.plugin.getLogger().info("ProtectionStones is known you over ride playershops command '/ps'");
+            PlayerShops.plugin.getLogger().info("You can use other commands such as '/pshops', '/playershops' to access it");
         }
     }
 

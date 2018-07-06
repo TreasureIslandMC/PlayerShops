@@ -1,17 +1,17 @@
- name: PlayerShops
- version: 1.2.1
+ name: ${pom.artifactId}
+ version: ${pom.version}
  description: Virtual player shops
- author: [InfoPaste]
+ author: [jsbroks]
  website: https://www.spigotmc.org/resources/number/
 
- main: Main
+ main: me.jsbroks.playershops.PlayerShops
  database: false
- softdepend: [Vault]
+ depend: [Vault]
 
 
  commands:
    playershop:
-     description: Main Player Shop command line
+     description: PlayerShops Player Shop command line
      aliases: [ps, pshop, pshops]
 
 

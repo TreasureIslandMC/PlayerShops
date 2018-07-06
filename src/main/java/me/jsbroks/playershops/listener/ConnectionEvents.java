@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static me.jsbroks.playershops.Main.*;
+import static me.jsbroks.playershops.PlayerShops.*;
 
 /**
  * Events Include
@@ -35,20 +35,14 @@ public class ConnectionEvents implements Listener {
                 Inventory inv = offlineInventories.get(uuid);
                 onlineInventories.put(uuid, inv);
                 offlineInventories.remove(uuid);
-                if (inv.getViewers().size() < 0) {
-                    for (HumanEntity humanEntity : inv.getViewers()) {
-                        humanEntity.closeInventory();
-                        humanEntity.openInventory(onlineInventories.get(uuid));
-                    }
-                }
             } else {
 
                 if (!databaseHandler.containsPlayer(event.getUniqueId())) {
-                    System.out.println("[PlayerShops-MySQL] Player not found, creating player...");
+                    System.out.println("[PlayerShops] Player not found, creating player...");
                     databaseHandler.createPlayer(uuid, event.getName());
                 }
 
-                System.out.println("[PlayerShops-MySQL] Loading " + event.getName() + "'s shop...");
+                System.out.println("[PlayerShops] Loading " + event.getName() + "'s shop...");
                 String data = databaseHandler.getInventory(uuid);
 
                 if (!data.equalsIgnoreCase("Not Set") && !onlineInventories.containsKey(uuid)) {

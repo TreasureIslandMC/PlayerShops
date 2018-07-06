@@ -41,6 +41,7 @@ Settings:
 
   CleanDatabase:
     OnEnable: true
+    # In days
     OlderThan: 50
 
 Signs:
@@ -86,7 +87,7 @@ ItemPermissions:
     - DIAMOND
   Group2:
     Permission: 'playershops.group2'
-    #Can sell everything but this item
+    # Can sell everything but this item
     SellItems: false
     Items:
     - DIAMOND

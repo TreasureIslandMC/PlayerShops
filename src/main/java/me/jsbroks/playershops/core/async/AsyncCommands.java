@@ -5,7 +5,6 @@ import me.jsbroks.playershops.core.Config;
 import me.jsbroks.playershops.core.Economy;
 import me.jsbroks.playershops.core.data.DatabaseHandler;
 import me.jsbroks.playershops.core.hooks.HookManager;
-import me.infopaste.playershops.util.*;
 import me.jsbroks.playershops.util.*;
 import net.md_5.bungee.api.chat.*;
 import org.apache.commons.lang.math.NumberUtils;
@@ -25,7 +24,7 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.util.List;
 
-import static me.jsbroks.playershops.Main.*;
+import static me.jsbroks.playershops.PlayerShops.*;
 import static me.jsbroks.playershops.core.Economy.canAfford;
 
 public class AsyncCommands {

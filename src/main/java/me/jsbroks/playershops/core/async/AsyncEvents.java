@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static me.jsbroks.playershops.Main.*;
+import static me.jsbroks.playershops.PlayerShops.*;
 
 public class AsyncEvents {
 

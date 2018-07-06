@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static me.jsbroks.playershops.Main.plugin;
+import static me.jsbroks.playershops.PlayerShops.plugin;
 
 public class Config {
 

@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import static me.jsbroks.playershops.Main.playersInEditMode;
+import static me.jsbroks.playershops.PlayerShops.playersInEditMode;
 
 public class InventoryEvents implements Listener {
 

@@ -12,8 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import static me.jsbroks.playershops.Main.plugin;
-import static sun.audio.AudioPlayer.player;
+import static me.jsbroks.playershops.PlayerShops.plugin;
 
 class ShopFile {
 

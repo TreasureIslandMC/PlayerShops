@@ -23,8 +23,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-import static me.jsbroks.playershops.Main.needToBeSaved;
-import static me.jsbroks.playershops.Main.tLogger;
+import static me.jsbroks.playershops.PlayerShops.needToBeSaved;
+import static me.jsbroks.playershops.PlayerShops.tLogger;
 import static me.jsbroks.playershops.core.Economy.canAfford;
 
 public class ShopEvents implements Listener {
