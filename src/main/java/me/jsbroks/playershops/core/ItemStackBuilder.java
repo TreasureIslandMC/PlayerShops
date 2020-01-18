@@ -18,21 +18,19 @@ public class ItemStackBuilder {
 
     private final ItemStack ITEM_STACK;
 
-    public ItemStackBuilder(Material mat) {
-        this.ITEM_STACK = new ItemStack(mat);
-    }
-    public ItemStackBuilder(Material mat, int value) {
-        this.ITEM_STACK = new ItemStack(mat, 1, (short)value);
-    }
-    public ItemStackBuilder(Material mat, int amount , int value) {
-        this.ITEM_STACK = new ItemStack(mat, amount, (short)value);
+    public ItemStackBuilder(Material mat, int amount) {
+        this.ITEM_STACK = new ItemStack(mat, amount);
     }
 
     public ItemStackBuilder(ItemStack item) {
         this.ITEM_STACK = item;
     }
 
-    public ItemStackBuilder withAmount(int amount) {
+	public ItemStackBuilder(final Material material) {
+        this.ITEM_STACK = new ItemStack(material);
+	}
+
+	public ItemStackBuilder withAmount(int amount) {
         ITEM_STACK.setAmount(amount);
         return this;
     }
@@ -103,7 +101,7 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder setPlayerHead(String playerhead) {
         Material type = ITEM_STACK.getType();
-        if(type == Material.SKULL_ITEM) {
+        if(type == Material.PLAYER_HEAD) {
             final SkullMeta meta = (SkullMeta)ITEM_STACK.getItemMeta();
             meta.setOwner(playerhead);
             ITEM_STACK.setItemMeta(meta);
