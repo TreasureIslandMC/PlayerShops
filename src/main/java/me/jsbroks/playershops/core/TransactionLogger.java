@@ -1,5 +1,6 @@
 package me.jsbroks.playershops.core;
 
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.util.NumberUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,13 +24,13 @@ public class TransactionLogger {
     private File file;
 
     public TransactionLogger(String file) {
-        enabled = Config.config.getBoolean("Settings.Log.Enabled");
+        enabled = plugin.getLang().getBoolean("Settings.Log.Enabled");
         if (enabled) {
 
-            enabledSell = Config.config.getBoolean("Settings.Log.AddItemToShop");
-            enabledTransaction = Config.config.getBoolean("Settings.Log.Transaction");
-            enabledBill = Config.config.getBoolean("Settings.Log.BillCollection");
-            enabledTax = Config.config.getBoolean("Settings.Log.Taxes");
+            enabledSell = plugin.getLang().getBoolean("Settings.Log.AddItemToShop");
+            enabledTransaction = plugin.getLang().getBoolean("Settings.Log.Transaction");
+            enabledBill = plugin.getLang().getBoolean("Settings.Log.BillCollection");
+            enabledTax = plugin.getLang().getBoolean("Settings.Log.Taxes");
 
             this.file = new File(plugin.getDataFolder() + "/logs/", file);
             createFile();

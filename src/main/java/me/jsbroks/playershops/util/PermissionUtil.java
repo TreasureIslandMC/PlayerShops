@@ -1,9 +1,11 @@
 package me.jsbroks.playershops.util;
 
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.PlayerShops;
+import me.jsbroks.playershops.core.config.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,30 +15,29 @@ import java.util.UUID;
 
 import static me.jsbroks.playershops.PlayerShops.databaseHandler;
 import static me.jsbroks.playershops.PlayerShops.onlineInventories;
-import static me.jsbroks.playershops.PlayerShops.plugin;
 
 public class PermissionUtil {
+    private static PlayerShops plugin;
+
+    public PermissionUtil(final PlayerShops plugin) {
+        PermissionUtil.plugin = plugin;
+    }
 
     public static int getInventorySize(Player player) {
-        int rows = 1;
-
         if (player.hasPermission("playershops.size.6")) {
-            rows = 6;
+            return 6*9;
         } else if (player.hasPermission("playershops.size.5")) {
-            rows = 5;
+            return 5*9;
         } else if (player.hasPermission("playershops.size.4")) {
-            rows = 4;
+            return 4*9;
         } else if (player.hasPermission("playershops.size.3")) {
-            rows = 3;
+            return 3*9;
         } else if (player.hasPermission("playershops.size.2")) {
-            rows = 2;
+            return 2*9;
         } else if (player.hasPermission("playershops.size.1")) {
-            rows = 1;
-        } else if (player.hasPermission("playershops.size.0")) {
-            rows = 0;
+            return 9;
         }
-
-        return rows * 9;
+        return 0;
     }
 
     /**
@@ -65,22 +66,23 @@ public class PermissionUtil {
         }
     }
 
-    public static void checkInventory(final Player player, Inventory inv) {
-
+    public static void checkInventory(final Player player, final InventoryView inventoryView){
         UUID uuid = player.getUniqueId();
-        String shopAllowed = inventorySizeToPermission(player, inv);
+        String shopAllowed = inventorySizeToPermission(player, inventoryView.getTopInventory());
 
         if (shopAllowed.equalsIgnoreCase("s")) {
             //Player has a smaller shop then allowed
-            Inventory newInv = Bukkit.createInventory(null, getInventorySize(player), inv.getName());
-            newInv.setContents(inv.getContents());
+            Inventory newInv = Bukkit.createInventory(null, getInventorySize(player), inventoryView.getTitle());
+            newInv.setContents(inventoryView.getTopInventory().getContents());
             onlineInventories.put(uuid, newInv);
             databaseHandler.setInventory(uuid, newInv);
+            return;
+        }
 
-        } else if (shopAllowed.equalsIgnoreCase("l")) {
+        if (shopAllowed.equalsIgnoreCase("l")) {
             // Player has a larger shop then allowed
-            Inventory newInv = Bukkit.createInventory(null, getInventorySize(player), inv.getName());
-            ItemStack[] contents = inv.getContents();
+            Inventory newInv = Bukkit.createInventory(null, getInventorySize(player), inventoryView.getTitle());
+            ItemStack[] contents = inventoryView.getTopInventory().getContents();
 
             List<ItemStack> items = new ArrayList<>();
 
@@ -113,7 +115,7 @@ public class PermissionUtil {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        TextUtil.sendMessage(player, Config.lang.getString("ToManyItemsInShop"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("ToManyItemsInShop"));
                         for(ItemStack item: finalItems) {
                             player.getWorld().dropItem(player.getLocation(), ItemUtil.removePriceLore(item));
                         }

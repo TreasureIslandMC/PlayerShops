@@ -1,7 +1,8 @@
 package me.jsbroks.playershops.listener;
 
+import me.jsbroks.playershops.PlayerShops;
 import me.jsbroks.playershops.api.events.ShopCloseEvent;
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.api.events.ShopClickEvent;
 import me.jsbroks.playershops.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -11,20 +12,25 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import static me.jsbroks.playershops.PlayerShops.playersInEditMode;
 
 public class InventoryEvents implements Listener {
+    private PlayerShops plugin;
+
+    public InventoryEvents(final PlayerShops plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        Inventory inv = event.getInventory();
+        InventoryView inventoryView = event.getView();
         Player player = (Player) event.getPlayer();
 
-        String shopTitle = TextUtil.colorize(Config.config.getString("Settings.ShopPrefix"));
-        String name = inv.getName();
+        String shopTitle = TextUtil.colorize(plugin.getLang().getString("Settings.ShopPrefix"));
+        String name = inventoryView.getTitle();
 
         playersInEditMode.remove(player);
 
@@ -33,7 +39,7 @@ public class InventoryEvents implements Listener {
 
             ShopCloseEvent shopCloseEvent = new ShopCloseEvent(player,
                     shopOwner,
-                    inv);
+                    inventoryView.getTopInventory());
 
             Bukkit.getServer().getPluginManager().callEvent(shopCloseEvent);
         }
@@ -46,11 +52,11 @@ public class InventoryEvents implements Listener {
             return;
         }
 
-        Inventory inv = event.getClickedInventory();
+        InventoryView inventoryView = event.getView();
         Player player = (Player) event.getWhoClicked();
 
-        String shopTitle = TextUtil.colorize(Config.config.getString("Settings.ShopPrefix"));
-        String name = inv.getName();
+        String shopTitle = TextUtil.colorize(plugin.getLang().getString("Settings.ShopPrefix"));
+        String name = inventoryView.getTitle();
 
         if (name.startsWith(shopTitle)) {
             if (event.getCurrentItem() == null) {
@@ -67,7 +73,7 @@ public class InventoryEvents implements Listener {
             ShopClickEvent shopClickEvent = new ShopClickEvent(player,
                     shopOwner,
                     event.getClick(),
-                    inv,
+                    inventoryView.getTopInventory(),
                     event.getSlot(),
                     item,
                     editMode);

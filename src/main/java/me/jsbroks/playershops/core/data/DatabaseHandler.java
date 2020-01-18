@@ -1,6 +1,7 @@
 package me.jsbroks.playershops.core.data;
 
 import com.google.common.collect.Multimap;
+import me.jsbroks.playershops.PlayerShops;
 import me.jsbroks.playershops.util.InventoryUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -45,7 +46,7 @@ public enum DatabaseHandler {
             case MYSQL:
                 plugin.getLogger().info("Setting up MySQL Database");
 
-                mySQLManager = new MySQLManager();
+                mySQLManager = new MySQLManager(plugin);
                 databaseHandler = MYSQL;
 
                 mySQLManager.setupMySQL();

@@ -1,6 +1,7 @@
 package me.jsbroks.playershops.util;
 
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.PlayerShops;
+import me.jsbroks.playershops.core.config.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
@@ -13,6 +14,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class InventoryUtil {
+    private static PlayerShops plugin;
+
+    public InventoryUtil(final PlayerShops plugin) {
+        InventoryUtil.plugin = plugin;
+    }
 
     /**
      * Converts inventory to base 64
@@ -60,6 +66,6 @@ public class InventoryUtil {
     }
 
     public static String getInventoryTitle(OfflinePlayer player) {
-        return TextUtil.colorize(Config.config.getString("Settings.ShopPrefix")) + " " + player.getName();
+        return TextUtil.colorize(plugin.getLang().getString("Settings.ShopPrefix")) + " " + player.getName();
     }
 }

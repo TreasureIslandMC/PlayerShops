@@ -1,6 +1,6 @@
 package me.jsbroks.playershops.commands;
 
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.core.TransactionLogger;
 import me.jsbroks.playershops.core.async.AsyncCommands;
 import me.jsbroks.playershops.core.data.DatabaseHandler;
@@ -36,7 +36,7 @@ public class MainCommands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("playershop")) {
 
             boolean isPlayer = sender instanceof Player;
-            String permission = Config.lang.getString("PermissionDenied");
+            String permission = plugin.getLang().getString("PermissionDenied");
 
             if (args.length == 0) {
                 helpMenu(sender);
@@ -59,47 +59,47 @@ public class MainCommands implements CommandExecutor {
 
                     // ps sell <price>
                     if (args.length != 2) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Sell.Format"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Sell.Format"));
                         return true;
                     }
 
                     //Item is hand is null
                     ItemStack item = player.getItemInHand();
                     if (item.getType() == null || item.getType() == Material.AIR) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Sell.NoItemInHand"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Sell.NoItemInHand"));
                         return true;
                     }
 
                     if (!NumberUtils.isNumber(args[1])) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Sell.InvalidNumber"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Sell.InvalidNumber"));
                         return true;
                     }
 
                     double price = NumberUtil.formatDecimalPlaces(Double.valueOf(args[1]));
 
-                    if (price > Config.config.getDouble("Settings.MaxPrice")) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Sell.PriceToHigh"));
+                    if (price > plugin.getLang().getDouble("Settings.MaxPrice")) {
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Sell.PriceToHigh"));
                         return true;
-                    } else if (price < Config.config.getDouble("Settings.MinPrice")) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Sell.PriceToLow"));
+                    } else if (price < plugin.getLang().getDouble("Settings.MinPrice")) {
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Sell.PriceToLow"));
                         return true;
                     }
 
                     String configSection = "ItemPermissions";
 
                     if (!player.hasPermission("playershops.bypass.item.permissions")) {
-                        for (String section : Config.config.getConfigurationSection(configSection).getKeys(false)) {
+                        for (String section : plugin.getLang().getConfigurationSection(configSection).getKeys(false)) {
                             configSection = configSection + "." + section;
-                            if (Config.config.contains(configSection + ".Permission")
-                                    && player.hasPermission(Config.config.getString(configSection + ".Permission"))) {
+                            if (plugin.getLang().contains(configSection + ".Permission")
+                                    && player.hasPermission(plugin.getLang().getString(configSection + ".Permission"))) {
 
                                 boolean sellItems = true;
-                                if (Config.config.contains(configSection + ".SellItems")) {
-                                    sellItems = Config.config.getBoolean(configSection + ".SellItems");
+                                if (plugin.getLang().contains(configSection + ".SellItems")) {
+                                    sellItems = plugin.getLang().getBoolean(configSection + ".SellItems");
                                 }
 
-                                if (Config.config.contains(configSection + ".Items")) {
-                                    List<String> items = Config.config.getStringList(configSection + ".Items");
+                                if (plugin.getLang().contains(configSection + ".Items")) {
+                                    List<String> items = plugin.getLang().getStringList(configSection + ".Items");
                                     if(items.contains(item.getType().name())) {
                                         if(sellItems) {
                                             break;
@@ -142,7 +142,7 @@ public class MainCommands implements CommandExecutor {
                             player.openInventory(onlineInventories.get(player.getUniqueId()));
                             return true;
                         } else {
-                            TextUtil.sendMessage(player, Config.lang.getString("Commands.Shop.Format"));
+                            TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Shop.Format"));
                             return true;
                         }
                     }
@@ -179,7 +179,7 @@ public class MainCommands implements CommandExecutor {
                     if (args.length == 1) {
                         Material hand = player.getItemInHand().getType();
                         if (hand == Material.AIR) {
-                            TextUtil.sendMessage(player, Config.lang.getString("Commands.Search.NoItemInHand"));
+                            TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Search.NoItemInHand"));
                             return true;
                         } else {
                             search = hand.name();
@@ -187,7 +187,7 @@ public class MainCommands implements CommandExecutor {
                     } else if (args.length == 2) {
                         search = args[1];
                     } else {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Search.Format"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Search.Format"));
                         return true;
 
                     }
@@ -209,7 +209,7 @@ public class MainCommands implements CommandExecutor {
                 if (player.hasPermission("playershops.edit")) {
 
                     if (args.length != 2) {
-                        TextUtil.sendMessage(player, Config.lang.getString("Commands.Edit.Format"));
+                        TextUtil.sendMessage(player, plugin.getLang().getString("Commands.Edit.Format"));
                         return true;
                     }
 
@@ -234,7 +234,7 @@ public class MainCommands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("delete")) {
                 if (sender.hasPermission("playershops.delete")) {
                     if (args.length != 2) {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.Delete.Format"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Delete.Format"));
                         return true;
                     }
 
@@ -252,15 +252,14 @@ public class MainCommands implements CommandExecutor {
                 if (sender.hasPermission("playershops.reload")) {
 
                     if (args.length != 1) {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.Reload.Format"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Reload.Format"));
                         return true;
                     }
 
-                    Config.reloadConfig();
-                    Config.reloadLang();
+                    plugin.getLang().reload();
 
                     databaseHandler.close();
-                    DatabaseHandler.valueOf(Config.config.getString("Database.Type")).setUp();
+                    DatabaseHandler.valueOf(plugin.getLang().getString("Database.Type")).setUp();
 
                     Date date = new Date();
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -283,7 +282,7 @@ public class MainCommands implements CommandExecutor {
                         plugin.getLogger().info("Done!");
                     }
 
-                    TextUtil.sendMessage(sender, Config.lang.getString("Commands.Reload.Success"));
+                    TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Reload.Success"));
 
                 } else {
                     TextUtil.sendMessage(sender, permission);
@@ -295,7 +294,7 @@ public class MainCommands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("setconfig")) {
                 if (sender.hasPermission("playershops.setconfig")) {
                     if (args.length > 2) {
-                        if (Config.config.contains(args[1])) {
+                        if (plugin.getLang().contains(args[1])) {
 
                             StringBuilder str = new StringBuilder();
                             for (int i = 2; i < args.length; i++) {
@@ -305,27 +304,27 @@ public class MainCommands implements CommandExecutor {
                             args[2] = str.toString().substring(0, str.length()-1);
 
                             if (args[2].equalsIgnoreCase("true")) {
-                                Config.config.set(args[1], true);
+                                plugin.getLang().set(args[1], true);
                             } else if (args[2].equalsIgnoreCase("false")) {
-                                Config.config.set(args[1], false);
+                                plugin.getLang().set(args[1], false);
                             } else if (NumberUtils.isNumber(args[2])) {
-                                Config.config.set(args[1], Double.valueOf(args[2]));
+                                plugin.getLang().set(args[1], Double.valueOf(args[2]));
                             } else {
-                                Config.config.set(args[1], args[2]);
+                                plugin.getLang().set(args[1], args[2]);
                             }
 
-                            Config.saveConfig();
-                            TextUtil.sendMessage(sender, Config.lang.getString("Commands.SetConfig.Success")
+                            plugin.getLang().save();
+                            TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.SetConfig.Success")
                                     .replaceAll("%location%", args[1])
                                     .replaceAll("%value%", args[2]));
 
                         } else {
-                            TextUtil.sendMessage(sender, Config.lang.getString("Commands.SetConfig.NotFound")
+                            TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.SetConfig.NotFound")
                                     .replaceAll("%location%", args[1]));
                         }
 
                     } else {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.SetConfig.Format"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.SetConfig.Format"));
                     }
                 } else {
                     TextUtil.sendMessage(sender, permission);
@@ -337,21 +336,21 @@ public class MainCommands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("convert")) {
                 if (sender.hasPermission("playershops.convert")) {
                     if (args.length != 2) {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.Convert.Format"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Convert.Format"));
                         return true;
                     }
 
                     Path path = Paths.get(plugin.getDataFolder() + "/data/");
 
                     if (databaseHandler != DatabaseHandler.MYSQL) {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.Convert.MySQLSelected"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Convert.MySQLSelected"));
                         return true;
                     }
 
                     if (args[1].equalsIgnoreCase("mysql")) {
 
                         if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
-                            TextUtil.sendMessage(sender, Config.lang.getString("Commands.Convert.NoDataFolder"));
+                            TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Convert.NoDataFolder"));
                             return true;
                         }
 
@@ -371,11 +370,11 @@ public class MainCommands implements CommandExecutor {
                 if (sender.hasPermission("playershops.clean")) {
 
                     if (args.length < 1 || args.length > 2) {
-                        TextUtil.sendMessage(sender, Config.lang.getString("Commands.Clean.Format"));
+                        TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Clean.Format"));
                         return true;
                     }
 
-                    int days = Config.config.getInt("Settings.CleanDatabase.OlderThan");
+                    int days = plugin.getLang().getInt("Settings.CleanDatabase.OlderThan");
 
                     if (args.length == 2) {
                         if (NumberUtils.isNumber(args[1])) {
@@ -383,7 +382,7 @@ public class MainCommands implements CommandExecutor {
                         }
                     }
 
-                    TextUtil.sendMessage(sender, Config.lang.getString("Commands.Clean.Started")
+                    TextUtil.sendMessage(sender, plugin.getLang().getString("Commands.Clean.Started")
                             .replaceAll("%days%", String.valueOf(days)));
 
                     AsyncCommands.cleanDatabase(sender, days);
@@ -409,40 +408,40 @@ public class MainCommands implements CommandExecutor {
         if (sender instanceof Player) {
 
             if (sender.hasPermission("playershops.sell")) {
-                helpMenu.add(Config.lang.getString("Commands.Sell.Format"));
+                helpMenu.add(plugin.getLang().getString("Commands.Sell.Format"));
             }
             if (sender.hasPermission("playershops.shop")) {
-                helpMenu.add(Config.lang.getString("Commands.Shop.Format"));
+                helpMenu.add(plugin.getLang().getString("Commands.Shop.Format"));
             }
             if (sender.hasPermission("playershops.search")) {
-                helpMenu.add(Config.lang.getString("Commands.Search.Format"));
+                helpMenu.add(plugin.getLang().getString("Commands.Search.Format"));
             }
             if (sender.hasPermission("playershops.edit")) {
-                helpMenu.add(Config.lang.getString("Commands.Edit.Format"));
+                helpMenu.add(plugin.getLang().getString("Commands.Edit.Format"));
             }
         }
 
         //Commands both console and players can use
 
         if (sender.hasPermission("playershops.clean")) {
-            helpMenu.add(Config.lang.getString("Commands.Clean.Format"));
+            helpMenu.add(plugin.getLang().getString("Commands.Clean.Format"));
         }
         if (sender.hasPermission("playershops.delete")) {
-            helpMenu.add(Config.lang.getString("Commands.Delete.Format"));
+            helpMenu.add(plugin.getLang().getString("Commands.Delete.Format"));
         }
         if (sender.hasPermission("playershops.reload")) {
-            helpMenu.add(Config.lang.getString("Commands.Reload.Format"));
+            helpMenu.add(plugin.getLang().getString("Commands.Reload.Format"));
         }
         if (sender.hasPermission("playershops.setconfig")) {
-            helpMenu.add(Config.lang.getString("Commands.SetConfig.Format"));
+            helpMenu.add(plugin.getLang().getString("Commands.SetConfig.Format"));
         }
         if (sender.hasPermission("playershops.convert")) {
-            helpMenu.add(Config.lang.getString("Commands.Convert.Format"));
+            helpMenu.add(plugin.getLang().getString("Commands.Convert.Format"));
         }
 
         Collections.sort(helpMenu);
 
-        for(String string: Config.lang.getStringList("Commands.HelpMenu.Top")) {
+        for(String string: plugin.getLang().getStringList("Commands.HelpMenu.Top")) {
             if (!string.equalsIgnoreCase("") || string != null) {
                 TextUtil.sendMessage(sender, string);
             }
@@ -454,7 +453,7 @@ public class MainCommands implements CommandExecutor {
             }
         }
 
-        for(String string: Config.lang.getStringList("Commands.HelpMenu.Bottom")) {
+        for(String string: plugin.getLang().getStringList("Commands.HelpMenu.Bottom")) {
             if (!string.equalsIgnoreCase("") || string != null) {
                 TextUtil.sendMessage(sender, string);
             }
@@ -462,9 +461,9 @@ public class MainCommands implements CommandExecutor {
     }
 
     private boolean blockCreative(Player player) {
-        if (Config.config.getBoolean("Settings.BlockCreative")) {
+        if (plugin.getLang().getBoolean("Settings.BlockCreative")) {
             if (player.getGameMode() == GameMode.CREATIVE) {
-                TextUtil.sendMessage(player, Config.lang.getString("BlockCreative"));
+                TextUtil.sendMessage(player, plugin.getLang().getString("BlockCreative"));
                 return true;
             }
         }

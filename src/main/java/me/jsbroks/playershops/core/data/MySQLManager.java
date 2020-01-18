@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.huskehhh.mysql.mysql.MySQL;
 import me.jsbroks.playershops.PlayerShops;
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.util.InventoryUtil;
 import me.jsbroks.playershops.util.ItemUtil;
 import me.jsbroks.playershops.util.MapUtil;
@@ -20,8 +20,8 @@ import java.util.*;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-class MySQLManager {
-
+public class MySQLManager {
+    private PlayerShops plugin;
     MySQL mySQL;
     Connection connection;
 
@@ -33,14 +33,18 @@ class MySQLManager {
 
     String prefix = "[PlayerShops-MySQL] ";
 
+    public MySQLManager(final PlayerShops plugin) {
+        this.plugin = plugin;
+    }
+
     public void setupMySQL() {
         try {
             // Database Connection Information
-            this.host = Config.config.getString("Database.Host");
-            this.port = Config.config.getString("Database.Port");
-            this.database = Config.config.getString("Database.Database");
-            this.username = Config.config.getString("Database.Username");
-            this.password = Config.config.getString("Database.Password");
+            this.host = plugin.getLang().getString("Database.Host");
+            this.port = plugin.getLang().getString("Database.Port");
+            this.database = plugin.getLang().getString("Database.Database");
+            this.username = plugin.getLang().getString("Database.Username");
+            this.password = plugin.getLang().getString("Database.Password");
 
             mySQL = new MySQL(host, port, database, username, password);
 

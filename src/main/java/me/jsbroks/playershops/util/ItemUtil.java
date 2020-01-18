@@ -1,8 +1,11 @@
 package me.jsbroks.playershops.util;
 
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.PlayerShops;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.core.ItemStackBuilder;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ItemUtil {
+    private static PlayerShops plugin;
+
+    public ItemUtil(final PlayerShops plugin) {
+        ItemUtil.plugin = plugin;
+    }
 
     /**
      * Creates a transaction bill
@@ -23,12 +31,12 @@ public class ItemUtil {
      */
     public static ItemStack createBill(Player player, double price, ItemStack item) {
 
-        String title = Config.config.getString("Bill.Title");
-        List<String> lores = Config.config.getStringList("Bill.Lore");
-        Material material = Material.getMaterial(Config.config.getString("Bill.Material"));
+        String title = plugin.getLang().getString("Bill.Title");
+        List<String> lores = plugin.getLang().getStringList("Bill.Lore");
+        Material material = Material.getMaterial(plugin.getLang().getString("Bill.Material"));
 
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat(Config.config.getString("Bill.DateFormat"));
+        SimpleDateFormat format = new SimpleDateFormat(plugin.getLang().getString("Bill.DateFormat"));
 
         List<String> newLore = new ArrayList<>();
 
@@ -54,14 +62,12 @@ public class ItemUtil {
     }
 
     public static boolean isBill(ItemStack item) {
-        if (item.getType() == Material.valueOf(Config.config.getString("Bill.Material"))) {
+        if (item.getType() == Material.valueOf(plugin.getLang().getString("Bill.Material"))) {
             if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
                 ItemMeta itemMeta = item.getItemMeta();
                 String name = itemMeta.getDisplayName();
 
-                if (name.equalsIgnoreCase(TextUtil.colorize(Config.config.getString("Bill.Title")))) {
-                    return true;
-                }
+                return name.equalsIgnoreCase(TextUtil.colorize(plugin.getLang().getString("Bill.Title")));
             }
         }
         return false;
@@ -71,7 +77,7 @@ public class ItemUtil {
         if (bill.hasItemMeta()) {
             ItemMeta itemMeta = bill.getItemMeta();
             List<String> lores = itemMeta.getLore();
-            List<String> configLores = Config.config.getStringList("Bill.Lore");
+            List<String> configLores = plugin.getLang().getStringList("Bill.Lore");
             for (int i = 0; i < configLores.size(); i++) {
                 String configLore = configLores.get(i);
                 if (configLore.contains("%price%")) {
@@ -94,7 +100,7 @@ public class ItemUtil {
 
     public static double getItemPrice(ItemStack item) {
 
-        String priceFormat[] = TextUtil.colorize(Config.config.getString("Settings.PriceLore")).split("%price%", 2);
+        String priceFormat[] = TextUtil.colorize(plugin.getLang().getString("Settings.PriceLore")).split("%price%", 2);
 
         if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
             ItemMeta itemMeta = item.getItemMeta();
@@ -120,7 +126,7 @@ public class ItemUtil {
 
     public static double getItemPriceEach(ItemStack item) {
 
-        String[] priceFormat = TextUtil.colorize(Config.config.getString("Settings.PriceEachLore")).split("%price%", 2);
+        String[] priceFormat = TextUtil.colorize(plugin.getLang().getString("Settings.PriceEachLore")).split("%price%", 2);
 
         if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
             ItemMeta itemMeta = item.getItemMeta();
@@ -151,8 +157,8 @@ public class ItemUtil {
                 List<String> lore = itemMeta.getLore();
                 Set<String> removeLore = new HashSet<>();
 
-                String priceEach[] = TextUtil.colorize(Config.config.getString("Settings.PriceEachLore")).split("%price%", 2);
-                String price[] = TextUtil.colorize(Config.config.getString("Settings.PriceLore")).split("%price%", 2);
+                String priceEach[] = TextUtil.colorize(plugin.getLang().getString("Settings.PriceEachLore")).split("%price%", 2);
+                String price[] = TextUtil.colorize(plugin.getLang().getString("Settings.PriceLore")).split("%price%", 2);
 
                 for (String l : lore) {
                     if (l.startsWith(priceEach[0])) {
@@ -189,14 +195,18 @@ public class ItemUtil {
             lore.addAll(itemMeta.getLore());
         }
 
-        lore.add(TextUtil.colorize(Config.config.getString("Settings.PriceLore").replaceAll("%price%", NumberUtil.stringFormatDecimalPlaces(price))));
-        lore.add(TextUtil.colorize(Config.config.getString("Settings.PriceEachLore").replaceAll("%price%", NumberUtil.stringFormatDecimalPlaces(price/item.getAmount()))));
+        lore.add(TextUtil.colorize(plugin.getLang().getString("Settings.PriceLore").replaceAll("%price%", NumberUtil.stringFormatDecimalPlaces(price))));
+        lore.add(TextUtil.colorize(plugin.getLang().getString("Settings.PriceEachLore").replaceAll("%price%", NumberUtil.stringFormatDecimalPlaces(price/item.getAmount()))));
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.setLore(lore);
 
 
         item.setItemMeta(itemMeta);
         return item;
+    }
+
+    public static boolean isSign(Block block){
+        return block.getState() instanceof Sign;
     }
 
 }

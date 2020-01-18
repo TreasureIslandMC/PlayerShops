@@ -1,5 +1,7 @@
 package me.jsbroks.playershops.core;
 
+import me.jsbroks.playershops.PlayerShops;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.core.hooks.HookManager;
 import me.jsbroks.playershops.util.NumberUtil;
 import me.jsbroks.playershops.util.TextUtil;
@@ -10,6 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class Economy {
+    private static PlayerShops plugin;
+
+    public Economy(final PlayerShops plugin) {
+        Economy.plugin = plugin;
+    }
 
     public static boolean canAfford(OfflinePlayer player, double cost) {
         double balance = HookManager.getBalance(player);
@@ -38,17 +45,17 @@ public class Economy {
 
         String configSection = "Transaction.TaxDiscounts";
 
-        for (String section : Config.config.getConfigurationSection(configSection).getKeys(false)) {
+        for (String section : plugin.getLang().getConfigurationSection(configSection).getKeys(false)) {
 
             configSection = configSection + "." + section;
 
-            if (player.hasPermission(Config.config.getString(configSection + ".Permission"))) {
-                TaxType taxType = TaxType.valueOf(Config.config.getString(configSection + ".Tax"));
-                double value = Config.config.getDouble(configSection + ".Amount");
+            if (player.hasPermission(plugin.getLang().getString(configSection + ".Permission"))) {
+                TaxType taxType = TaxType.valueOf(plugin.getLang().getString(configSection + ".Tax"));
+                double value = plugin.getLang().getDouble(configSection + ".Amount");
                 double amount = taxType.discountAmount(defaultTax, value);
                 value = taxType.discountTax(defaultTax, value);
-                if (Config.config.contains(configSection + ".Message")) {
-                    TextUtil.sendMessage(player, Config.config.getString(configSection + ".Message")
+                if (plugin.getLang().contains(configSection + ".Message")) {
+                    TextUtil.sendMessage(player, plugin.getLang().getString(configSection + ".Message")
                             .replaceAll("%discount%", NumberUtil.stringFormatDecimalPlaces(amount))
                             .replaceAll("%tax%", NumberUtil.stringFormatDecimalPlaces(value)));
                 }

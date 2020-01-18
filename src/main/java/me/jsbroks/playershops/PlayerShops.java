@@ -1,7 +1,7 @@
 package me.jsbroks.playershops;
 
 import me.jsbroks.playershops.commands.MainCommands;
-import me.jsbroks.playershops.core.Config;
+import me.jsbroks.playershops.core.config.Lang;
 import me.jsbroks.playershops.core.TransactionLogger;
 import me.jsbroks.playershops.core.data.DatabaseHandler;
 import me.jsbroks.playershops.util.MapUtil;
@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -25,7 +24,7 @@ import java.util.logging.Level;
 
 public class PlayerShops extends JavaPlugin {
 
-    public static Plugin plugin;
+    public static PlayerShops plugin;
 
     public static boolean spigot = true;
     public static boolean update = false;
@@ -40,11 +39,18 @@ public class PlayerShops extends JavaPlugin {
 
     public static Set<Player> playersInEditMode;
 
+    private Lang lang;
+
+    public Lang getLang() {
+        return lang;
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
 
-        configFiles();
+        lang = new Lang(this);
+
         HookManager.loadDependencies();
 
         Date date = new Date();
@@ -54,10 +60,9 @@ public class PlayerShops extends JavaPlugin {
         database();
         registerEvents();
         loadCommands();
-        checkForUpdates();
 
         onlineInventories = new HashMap<>();
-        offlineInventories = MapUtil.createLRUMap(Config.config.getInt("Settings.MaxOfflineInventoriesSize"));
+        offlineInventories = MapUtil.createLRUMap(lang.getInt("Settings.MaxOfflineInventoriesSize"));
         needToBeSaved = new HashSet<>();
         playersInEditMode = new HashSet<>();
 
@@ -78,76 +83,41 @@ public class PlayerShops extends JavaPlugin {
 
         getLogger().info("Closing all players inventories. (In case this is a reload)");
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getOpenInventory().getTitle().startsWith(Config.config.getString("Settings.ShopPrefix"))) {
+            if (player.getOpenInventory().getTitle().startsWith(lang.getString("Settings.ShopPrefix"))) {
                 player.closeInventory();
-                TextUtil.sendMessage(player, Config.lang.getString("Reload.InventoryClose"));
+                TextUtil.sendMessage(player, lang.getString("Reload.InventoryClose"));
             }
         }
 
         databaseHandler.close();
+        lang = null;
         plugin = null;
     }
 
     /**
      * Initialize connection with MySQL Database and remove an older accounts.
      *
-     * @return void
      */
     private void database() {
         // Connect to MySQL
-        DatabaseHandler.valueOf(Config.config.getString("Database.Type")).setUp();
+        DatabaseHandler.valueOf(lang.getString("Database.Type")).setUp();
 
-        if (Config.config.getBoolean("Settings.CleanDatabase.OnEnable")) {
-            getLogger().info("Cleaning database (Removing accounts over " + Config.config.getInt("Settings.CleanDatabase.OlderThan") + " days) ...");
-            getLogger().info(databaseHandler.cleanDatabase(Config.config.getInt("Settings.CleanDatabase.OlderThan")) + " have been removed");
+        if (lang.getBoolean("Settings.CleanDatabase.OnEnable")) {
+            getLogger().info("Cleaning database (Removing accounts over " + lang.getInt("Settings.CleanDatabase.OlderThan") + " days) ...");
+            getLogger().info(databaseHandler.cleanDatabase(lang.getInt("Settings.CleanDatabase.OlderThan")) + " have been removed");
         }
     }
 
     private void registerEvents() {
-        registerEvents(plugin, new ConnectionEvents(), new InventoryEvents(), new ShopEvents(), new SignEvents(), new ChatEvents());
+        registerEvents(this, new ConnectionEvents(), new InventoryEvents(this), new ShopEvents(this), new SignEvents(this), new ChatEvents(this));
     }
     
     private void loadCommands() {
         getCommand("playershop").setExecutor(new MainCommands());
     }
 
-    private void configFiles() {
-        Config.setup(this);
-    }
-
-    private void checkForUpdates() {
-        //TODO: Update update checker
-//        if (Config.config.getBoolean("Settings.UpdateChecker")) {
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    plugin.getLogger().info("Checking for update...");
-//
-//                    String website = PlayerShops.checkWebsiteForString();
-//
-//                    if (website.equalsIgnoreCase(plugin.getDescription().getVersion())) {
-//                        plugin.getLogger().info("You are using the most current version");
-//                    } else if (website.equalsIgnoreCase("Error")) {
-//                        plugin.getLogger().info("Error checking for update, couldn't connect to spigotmc.org");
-//                    } else {
-//                        plugin.getLogger().info("An new update is available! (" + website + ")");
-//                        update = true;
-//                    }
-//                }
-//            }.runTaskAsynchronously(plugin);
-//        } else {
-//            getLogger().info("Skipping checking for updates (disabled in config.yml)");
-//        }
-    }
 
     private void setUp() {
-        try {
-            Class.forName("org.spigotmc.SpigotConfig");
-        } catch (ClassNotFoundException ignore) {
-            getLogger().info("Using spigot will unlock all features");
-            spigot = false;
-        }
-
         if (Bukkit.getOnlinePlayers().size() > 0) {
             getLogger().log(Level.WARNING, "Reloading the server is highly not recommend");
             getLogger().info("Loading shops of all players online... (Not Async)");
