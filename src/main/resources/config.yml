@@ -2,7 +2,7 @@ Database:
   # Type Options:
   # FILE - Saves to file
   # MYSQL - Saves to MySQL
-  Type: MYSQL
+  Type: FILE
   Host: localhost
   Username: 'root'
   # Leave blank for no password
