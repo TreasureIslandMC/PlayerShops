@@ -13,3 +13,6 @@ rm '.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml'
 rm '.idea/libraries/Maven__org_spigotmc_spigot_api_1_10_2_R0_1_SNAPSHOT.xml'
 rm '.idea/libraries/Maven__org_yaml_snakeyaml_1_15.xml'
 rm '.idea/modules.xml'
+target
+.idea
+*.iml
