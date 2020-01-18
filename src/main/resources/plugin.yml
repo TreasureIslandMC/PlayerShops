@@ -1,5 +1,5 @@
- name: ${pom.artifactId}
- version: ${pom.version}
+ name: ${project.artifactId}
+ version: ${project.version}
  description: Virtual player shops
  author: [jsbroks]
  website: https://www.spigotmc.org/resources/number/
@@ -16,7 +16,6 @@
 
 
  permissions:
-
    playershops.admin:
      description: Access to all PlayerShop permissions
      children:
