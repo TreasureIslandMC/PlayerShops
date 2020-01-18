@@ -4,6 +4,8 @@
  author: [jsbroks]
  website: https://www.spigotmc.org/resources/number/
 
+ api-version: "1.15"
+
  main: me.jsbroks.playershops.PlayerShops
  database: false
  depend: [Vault]
