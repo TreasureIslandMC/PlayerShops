@@ -13,8 +13,6 @@ Database:
 Settings:
   BlockCreative: true
 
-  UpdateChecker: true
-
   # Note the "00", meaning exactly two decimal places.
   # If you use "#.##" (# means "optional" digit), it will drop trailing zeroes
   DecimalFormat: '#,###,##0.00'

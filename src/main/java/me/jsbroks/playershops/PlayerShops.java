@@ -49,6 +49,7 @@ public class PlayerShops extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        saveDefaultConfig();
         lang = new Lang(this);
 
         HookManager.loadDependencies();
@@ -100,11 +101,11 @@ public class PlayerShops extends JavaPlugin {
      */
     private void database() {
         // Connect to MySQL
-        DatabaseHandler.valueOf(lang.getString("Database.Type")).setUp();
+        DatabaseHandler.valueOf(getConfig().getString("Database.Type")).setUp();
 
-        if (lang.getBoolean("Settings.CleanDatabase.OnEnable")) {
-            getLogger().info("Cleaning database (Removing accounts over " + lang.getInt("Settings.CleanDatabase.OlderThan") + " days) ...");
-            getLogger().info(databaseHandler.cleanDatabase(lang.getInt("Settings.CleanDatabase.OlderThan")) + " have been removed");
+        if (getConfig().getBoolean("Settings.CleanDatabase.OnEnable")) {
+            getLogger().info("Cleaning database (Removing accounts over " + getConfig().getInt("Settings.CleanDatabase.OlderThan") + " days) ...");
+            getLogger().info(databaseHandler.cleanDatabase(getConfig().getInt("Settings.CleanDatabase.OlderThan")) + " have been removed");
         }
     }
 
